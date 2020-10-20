@@ -5,9 +5,9 @@ const headerContent = `
         </div>
         <div class="header--content--nav">
             <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/contactus">Contact us</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="##">Contact us</a></li>
+                <li><a href="##">Login</a></li>
             </ul>
         </div>
     </header>
