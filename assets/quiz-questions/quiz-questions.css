@@ -246,7 +246,7 @@
     width: 15px;
     height: 100%;
     opacity: 0;
-    animation-name: shine;
+    animation-name: shine_2;
     animation-duration: 2.5s;
     animation-iteration-count: infinite;
     animation-delay: 0.0s;
@@ -262,13 +262,13 @@
     width: 10px;
     height: 100%;
     opacity: 0;
-    animation-name: shine;
+    animation-name: shine_2;
     animation-duration: 2.5s;
     animation-iteration-count: infinite;
     animation-delay: 0.5s;
 }
 
-@keyframes shine {
+@keyframes shine_2 {
     0% {
         left: 0;
         width: 0;

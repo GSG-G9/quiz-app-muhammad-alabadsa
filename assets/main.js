@@ -5,8 +5,10 @@ import contentSection from "./page-layout/content.js";
 import selectLanguage from "./quiz-options/language.js";
 import questionsSection from "./quiz-questions/quiz-questions.js";
 import questions from "./quiz-questions/questions.js";
+import loginSection from "./login/login.js";
 
 const $rootContainer = document.getElementById("root");
+
 let $resultsContainer;
 let $submitButton;
 let $quizQuestionsContainer;
@@ -17,13 +19,19 @@ let $backToLanguageList;
 let $resulContainer;
 let $languageSelectContainer;
 let $quizQuestions;
+let $quizContainer;
+let $login;
+let $contentQuiz;
+let $loginContainer;
 
 const state = {
   selectZone: false,
   questions: [],
+  username: JSON.parse(localStorage.getItem("quizapp")).username,
+  password: JSON.parse(localStorage.getItem("quizapp")).password,
 };
 
-localStorage.setItem("quizapp", JSON.stringify(questions));
+// localStorage.setItem("quizapp", JSON.stringify(questions));
 
 let currentIndex = 0;
 let rightAnswersCount = 0;
@@ -147,18 +155,120 @@ function checkAnswer(rightAnswer, questionsCount) {
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
+  // localStorage.setItem(
+  //   "quizapp",
+  //   JSON.stringify({
+  //     ...questions,
+  //     username: "",
+  //     password: "",
+  //   })
+  // );
+  
   $rootContainer.innerHTML = layoutPage;
   const $header = document.getElementById("header");
-  const $contentQuiz = document.getElementById("content-quiz");
+  $contentQuiz = document.getElementById("content-quiz");
+  $quizContainer = document.querySelector("#root .container");
 
   $header.innerHTML = headerBox;
   $contentQuiz.innerHTML += startSection;
   $contentQuiz.innerHTML += contentSection;
   $contentQuiz.innerHTML += selectLanguage;
   $contentQuiz.innerHTML += questionsSection;
+  $contentQuiz.innerHTML += loginSection;
+
+  let $showUsername = document.querySelector(".header--content--username__text");
+
+  let $startQuiz = document.getElementById("start-quiz");
+  let $startQuizBtn = document.getElementById("start-quiz-btn");
+  let $StartContentDesc = document.getElementById("start-content-desc");
 
   $languageSelectContainer = document.getElementById("language");
   $quizQuestions = document.getElementById("quiz-questions");
+  $login = document.getElementById("login");
+  let $nameInput = document.getElementById("name-input");
+  let $passwordInput = document.getElementById("password-input");
+  let $submitBtn = document.getElementById("submit-btn");
+  const $loginBtn = document.querySelector(".navlink--item__login");
+  const $loginClose = document.querySelector(".close");
+  const $logout = document.querySelector(".navlink--item__logout");
+
+  $loginBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    if ($login.style.display === "block") {
+      $login.style.display = "none";
+    } else {
+      $login.style.display = "block";
+    }
+  });
+
+  $loginClose.addEventListener("click", function () {
+    console.log($login.hasAttribute("display"));
+    if ($login.style.display === "block") {
+      $login.style.display = "none";
+    } else {
+      $login.style.display = "block";
+    }
+  });
+
+  $submitBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    if($nameInput.value && $passwordInput.value) {
+      localStorage.setItem(
+        "quizapp",
+        JSON.stringify({
+          ...questions,
+          username: $nameInput.value,
+          password: $passwordInput.value,
+        })
+      );
+      console.log(JSON.parse(localStorage.getItem("quizapp")));
+      state.username = JSON.parse(localStorage.getItem("quizapp")).username;
+      state.password = JSON.parse(localStorage.getItem("quizapp")).password;
+      console.log(state);
+      // $showUsername.textContent = state.username;
+      checkLogin();
+    } else {
+      return;
+    }
+    if ($login.style.display === "block") {
+      $login.style.display = "none";
+    } else {
+      $login.style.display = "block";
+    }
+  });
+
+  const checkLogin = () => {
+    if (state.username) {
+      $logout.style.display = "flex";
+      $loginBtn.style.display = "none";
+      $startQuizBtn.removeAttribute("disabled");
+      $showUsername.innerHTML = "Username: " + "<span>" + state.username + "</span>";
+    } else {
+      $logout.style.display = "none";
+      $loginBtn.style.display = "flex";
+      $startQuizBtn.setAttribute("disabled", "true");
+      $showUsername.innerHTML = "Login To Start";
+    }
+    console.log(state.username);
+  }
+  
+  checkLogin();
+
+  const btnStartDisable = () => {
+    if (state.username) {
+      $startQuizBtn.removeAttribute("disabled")
+    } else {
+      $startQuizBtn.setAttribute("disabled", "true");
+    }
+  }
+
+  btnStartDisable();
+
+  $logout.addEventListener("click", function() {
+    state.username = "";
+    state.password = "";
+    checkLogin();
+  })
 
   $languageSelectContainer.classList.add("block-none");
   $quizQuestions.classList.add("block-none");
@@ -172,9 +282,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       switch (lang) {
         case "javascript":
-          state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
-            (q) => q.lang === "javascript"
-          );
+          // state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
+          //   (q) => q.lang === "javascript"
+          // );
+          for(let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if(JSON.parse(localStorage.getItem("quizapp"))[item].lang === 'javascript') {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[item];
+            }
+          }
+          console.log(state.questions);
           break;
         case "css":
           state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
@@ -214,16 +330,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
       // $resulContainer = document.querySelector(".result-container");
       let $progressBarJuice = document.querySelector(".progress-bar .span");
 
-      state.questions[0].questions.sort(() => 0.5 - Math.random()).length = 10;
+      state.questions.questions.sort(() => 0.5 - Math.random()).length = 10;
 
       $submitButton.addEventListener("click", function (e) {
-        let correctAnswer = questions[0].questions[currentIndex].correctAnswer;
+        let correctAnswer = questions.questions[currentIndex].correctAnswer;
 
         currentIndex++;
         console.log(currentIndex);
         // console.log(correctAnswer);
 
-        checkAnswer(correctAnswer, questions[0].questions.length);
+        checkAnswer(correctAnswer, questions.questions.length);
 
         $quizQuestionsContainer.innerHTML = "";
         $optionsArea.innerHTML = "";
@@ -231,12 +347,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
         $progressBarJuice.style.width = currentIndex + "0%";
 
         renderQuestions(
-          questions[0].questions[currentIndex],
-          questions[0].lang,
-          questions[0].questions.length
+          questions.questions[currentIndex],
+          questions.lang,
+          questions.questions.length
         );
 
-        showResult(questions[0].questions.length);
+        showResult(questions.questions.length);
         $resulContainer = document.querySelector(".result-container");
       });
 
@@ -286,9 +402,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
       };
       renderQuestions(
-        questions[0].questions[currentIndex],
-        questions[0].lang,
-        questions[0].questions.length
+        questions.questions[currentIndex],
+        questions.lang,
+        questions.questions.length
       );
       console.log(questions);
 
@@ -308,9 +424,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
   });
 
-  const $startQuiz = document.getElementById("start-quiz");
-  const $startQuizBtn = document.getElementById("start-quiz-btn");
-  const $StartContentDesc = document.getElementById("start-content-desc");
+  // let $startQuiz = document.getElementById("start-quiz");
+  // let $startQuizBtn = document.getElementById("start-quiz-btn");
+  // let $StartContentDesc = document.getElementById("start-content-desc");
 
   $startQuizBtn.addEventListener("click", function (e) {
     $startQuiz.classList.add("fade-left");
@@ -333,6 +449,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
       //   $quizQuestions.classList.remove("nonevisible");
 
       document.getElementById("content-main").style.display = "none";
+      $contentQuiz.addEventListener("click", function (e) {
+        $login.classList.add("block-none");
+      });
     }, 398);
   });
 });

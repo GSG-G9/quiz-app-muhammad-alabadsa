@@ -9,6 +9,7 @@
     box-shadow: 0 5px 15px 0 #2727278e;
     box-sizing: border-box;
     z-index: 1000;
+    color: white;
 }
 .header--content {
     display: flex;
@@ -24,8 +25,9 @@
     display: flex;
     position: relative;
     margin-left: 1rem;
+    margin-bottom: 6px;
     font-size: 20px;
-    color: rgb(224, 223, 221);
+    color: white;
     font-weight: bold;
     background-color: orange;
     box-shadow: 5px 5px 0 0 #efefef;
@@ -49,8 +51,8 @@
     width: 10px;
     height: 100%;
     opacity: 0;
-    animation-name: shine;
-    animation-duration: 2.5s;
+    animation-name: shine_1;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
 }
 
@@ -64,8 +66,8 @@
     width: 15px;
     height: 100%;
     opacity: 0;
-    animation-name: shine;
-    animation-duration: 2.5s;
+    animation-name: shine_1;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-delay: 0.5s;
 }
@@ -77,10 +79,12 @@
     font-family: inherit;
     font-weight: normal;
     font-size: 16px;
+    color: white;
 }
 
 .header--content--nav ul {
     display: inherit;
+    color: white;
     margin: 0;
 }
 
@@ -88,13 +92,13 @@
     display: inherit;
     padding: 15px;
     text-decoration: none;
-    color: #efefef;
+    color: inherit;
 }
 
 .header--content--nav ul li a {
     display: inherit;
     text-decoration: none;
-    color: rgb(224, 223, 221);
+    color: inherit;
     font-weight: 600;
     background-color: orange;
     box-shadow: 0px 0px 0 0 #efefef;
@@ -121,19 +125,48 @@
     transition: 0.2s;
 }
 
-@keyframes shine {
+.header--content--nav ul .navlink--item__logout {
+    display: none;
+}
+
+.header--content--username {
+    display: flex;
+    margin-left: -1rem;
+    margin-bottom: 6px;
+    font-size: 20px;
+    color: rgb(224, 223, 221);
+    font-weight: bold;
+    background-color: orange;
+    box-shadow: 5px 5px 0 0 #efefef;
+    padding: 5px;
+    transform: skew(-12deg);
+    height: 2.5rem;
+    line-height: 2px;
+    box-sizing: inherit;
+}
+
+.header--content--username h2 {
+    color: #555555;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header--content--username h2 span {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+@keyframes shine_1 {
     0% {
         left: 0;
-        opacity: 0.5;
+        /* opacity: 0.5; */
     }
     25% {
-        opacity: 0.8;
+        opacity:1;
     }
-    /* 50% {
-        opacity: 1;
-    } */
-    70% {
-        opacity: 0;
+    85% {
+        /* opacity: 0; */
     }
     100% {
         left: 95%;
