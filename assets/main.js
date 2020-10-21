@@ -23,6 +23,7 @@ let $quizContainer;
 let $login;
 let $contentQuiz;
 let $loginContainer;
+let autoNextQuestion
 
 const state = {
   selectZone: false,
@@ -121,6 +122,7 @@ function showResult(questionCount) {
         </div>
       </div>
     `;
+    clearInterval(autoNextQuestion);
     }
     // const textNode = document.createTextNode('')
     $resultsContainer.innerHTML = theResults;
@@ -355,6 +357,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
         showResult(questions.questions.length);
         $resulContainer = document.querySelector(".result-container");
       });
+
+      autoNextQuestion = setInterval(() => {
+        $submitButton.click();
+      }, 2000);
 
       const renderQuestions = function (questions, lang, questionsCount) {
         if (currentIndex < questionsCount) {
