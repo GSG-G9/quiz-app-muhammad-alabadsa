@@ -1,0 +1,166 @@
+.login--container {
+    position: absolute;
+    display: none;
+    padding: 2rem 0;
+    top: 5%;
+    left: calc(50% - 250px);
+    width: 500px;
+    min-height: 500px;
+    margin: 0 auto;
+    border: 2px solid orange;
+    background-color: #ffffff;
+    z-index: 1000;
+    text-align: center;
+    box-shadow:  1px 1px 0 0 white, 15px 15px 0 0 orange,  20px 20px 10px 0 rgba(90, 90, 90, 0.705);
+}
+
+.close {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 2rem;
+    height: 2rem;
+    font-size: 28px;
+    color: orange;
+    border: 2px solid orange;
+    line-height: 14px;
+    padding: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+
+.close:hover {
+    color: white;
+    background-color: orange;
+    transition: 0.3s;
+}
+
+.login--container .login--form {
+    width: 100%;
+    padding-top: 2rem;
+}
+
+.login--container .login--title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    width: 150px;
+    height: 3rem;
+    margin: 0 auto;
+    color: #ffffff;
+    transform: skew(-25deg);
+    box-shadow: 1px 1px 0 0 rgb(179, 117, 2);
+}
+
+.login--container .login--title::before {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    background-color: #f7f7f786;
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 100%;
+    opacity: 0;
+    animation-name: shine;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.login--container .login--title::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f7f7f733;
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 100%;
+    opacity: 0;
+    animation-name: shine;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.5s;
+}
+
+.login--container .login--form .form--group {
+    width: 70%;
+    /* display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; */
+    /* margin-top: 1rem; */
+    margin: 20px auto;
+    height: 3rem;
+}
+
+.login--container .login--form .form--group input {
+    border: 1px solid orange;
+    outline: none;
+    height: 2rem;
+    width: 100%;
+    padding: 5px 15px;
+    font-size: 18px;
+    color: #353535;
+}
+
+.login--container .login--form .form--group label {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    display: block;
+    text-align: left;
+}
+
+.login--container .login--form .form--group input:focus {
+    outline: none;
+    box-shadow: inset 0 0 3px 0px orange;
+}
+
+.login--container .login--form .form--group button {
+    border: 1px solid orange;
+    outline: none;
+    height: 2rem;
+    width: 100%;
+    padding: 5px 15px;
+    margin-top: 1rem;
+    font-size: 18px;
+    color: orange;
+    font-weight: 700;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login--container .login--form .form--group button:hover {
+    color: #ffffff;
+    background-color: orange;
+    transition: 0.3s;
+}
+
+@keyframes shine {
+    0% {
+        left: 0;
+        width: 0;
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.8;
+        width: 10%;
+    }
+    /* 50% {
+        opacity: 1;
+    } */
+    70% {
+        opacity: 0.4;
+    }
+    99%{
+        opacity: 0;
+    }
+    100% {
+        left: 100%;
+    }
+}
