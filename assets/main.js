@@ -23,16 +23,18 @@ let $quizContainer;
 let $login;
 let $contentQuiz;
 let $loginContainer;
-let autoNextQuestion
+let autoNextQuestion;
+let duration = 3000;
+
+!localStorage.getItem("quizapp") && localStorage.setItem("quizapp", JSON.stringify(questions));
 
 const state = {
   selectZone: false,
   questions: [],
-  username: JSON.parse(localStorage.getItem("quizapp")).username,
-  password: JSON.parse(localStorage.getItem("quizapp")).password,
+  username: JSON.parse(localStorage.getItem("quizapp")).username || "",
+  password: JSON.parse(localStorage.getItem("quizapp")).password || "",
 };
 
-// localStorage.setItem("quizapp", JSON.stringify(questions));
 
 let currentIndex = 0;
 let rightAnswersCount = 0;
@@ -46,6 +48,7 @@ function showResult(questionCount) {
     $submitButton.remove();
     $progressBar.remove();
     $quizInfo.remove();
+    clearInterval(autoNextQuestion);
 
     if (
       rightAnswersCount > questionCount / 2 &&
@@ -122,8 +125,8 @@ function showResult(questionCount) {
         </div>
       </div>
     `;
-    clearInterval(autoNextQuestion);
     }
+
     // const textNode = document.createTextNode('')
     $resultsContainer.innerHTML = theResults;
     $backToLanguageList = document.querySelector(".back-language-list");
@@ -156,6 +159,12 @@ function checkAnswer(rightAnswer, questionsCount) {
   }
 }
 
+function countDown(duration) {
+  autoNextQuestion = setInterval(() => {
+    $submitButton.click();
+  }, duration);
+}
+
 document.addEventListener("DOMContentLoaded", function (e) {
   // localStorage.setItem(
   //   "quizapp",
@@ -165,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //     password: "",
   //   })
   // );
-  
+
   $rootContainer.innerHTML = layoutPage;
   const $header = document.getElementById("header");
   $contentQuiz = document.getElementById("content-quiz");
@@ -178,7 +187,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
   $contentQuiz.innerHTML += questionsSection;
   $contentQuiz.innerHTML += loginSection;
 
-  let $showUsername = document.querySelector(".header--content--username__text");
+  let $showUsername = document.querySelector(
+    ".header--content--username__text"
+  );
 
   let $startQuiz = document.getElementById("start-quiz");
   let $startQuizBtn = document.getElementById("start-quiz-btn");
@@ -214,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   $submitBtn.addEventListener("click", function (e) {
     e.preventDefault();
-    if($nameInput.value && $passwordInput.value) {
+    if ($nameInput.value && $passwordInput.value) {
       localStorage.setItem(
         "quizapp",
         JSON.stringify({
@@ -244,7 +255,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
       $logout.style.display = "flex";
       $loginBtn.style.display = "none";
       $startQuizBtn.removeAttribute("disabled");
-      $showUsername.innerHTML = "Username: " + "<span>" + state.username + "</span>";
+      $showUsername.innerHTML =
+        "Username: " + "<span>" + state.username + "</span>";
     } else {
       $logout.style.display = "none";
       $loginBtn.style.display = "flex";
@@ -252,32 +264,32 @@ document.addEventListener("DOMContentLoaded", function (e) {
       $showUsername.innerHTML = "Login To Start";
     }
     console.log(state.username);
-  }
-  
+  };
+
   checkLogin();
 
   const btnStartDisable = () => {
     if (state.username) {
-      $startQuizBtn.removeAttribute("disabled")
+      $startQuizBtn.removeAttribute("disabled");
     } else {
       $startQuizBtn.setAttribute("disabled", "true");
     }
-  }
+  };
 
   btnStartDisable();
 
-  $logout.addEventListener("click", function() {
+  $logout.addEventListener("click", function () {
     state.username = "";
     state.password = "";
     checkLogin();
-  })
+  });
 
   $languageSelectContainer.classList.add("block-none");
   $quizQuestions.classList.add("block-none");
 
   const $options = document.querySelectorAll("[class*=language__]");
 
-  const array = Object.values($options).map((i) => {
+  Object.values($options).map((i) => {
     // const lang = i.className.split(" ")[1].split("__")[1];
     i.addEventListener("click", function (e) {
       const lang = e.target.className.split(" ")[1].split("__")[1];
@@ -287,31 +299,64 @@ document.addEventListener("DOMContentLoaded", function (e) {
           // state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
           //   (q) => q.lang === "javascript"
           // );
-          for(let item in JSON.parse(localStorage.getItem("quizapp"))) {
-            if(JSON.parse(localStorage.getItem("quizapp"))[item].lang === 'javascript') {
-              state.questions = JSON.parse(localStorage.getItem("quizapp"))[item];
+          for (let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if (
+              JSON.parse(localStorage.getItem("quizapp"))[item].lang ===
+              "javascript"
+            ) {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[
+                item
+              ];
             }
           }
           console.log(state.questions);
           break;
         case "css":
-          state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
-            (q) => q.lang === "css"
-          );
+          for (let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if (
+              JSON.parse(localStorage.getItem("quizapp"))[item].lang ===
+              "javascript"
+            ) {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[
+                item
+              ];
+            }
+          }
           break;
         case "html":
-          state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
-            (q) => q.lang === "html"
-          );
+          for (let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if (
+              JSON.parse(localStorage.getItem("quizapp"))[item].lang ===
+              "javascript"
+            ) {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[
+                item
+              ];
+            }
+          }
           break;
         case "nodejs":
-          state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
-            (q) => q.lang === "nodejs"
-          );
+          for (let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if (
+              JSON.parse(localStorage.getItem("quizapp"))[item].lang ===
+              "javascript"
+            ) {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[
+                item
+              ];
+            }
+          }
         case "reactjs":
-          state.questions = JSON.parse(localStorage.getItem("quizapp")).filter(
-            (q) => q.lang === "reactjs"
-          );
+          for (let item in JSON.parse(localStorage.getItem("quizapp"))) {
+            if (
+              JSON.parse(localStorage.getItem("quizapp"))[item].lang ===
+              "javascript"
+            ) {
+              state.questions = JSON.parse(localStorage.getItem("quizapp"))[
+                item
+              ];
+            }
+          }
           break;
         default:
           "";
@@ -335,9 +380,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
       state.questions.questions.sort(() => 0.5 - Math.random()).length = 10;
 
       $submitButton.addEventListener("click", function (e) {
+        clearInterval(autoNextQuestion);
         let correctAnswer = questions.questions[currentIndex].correctAnswer;
 
         currentIndex++;
+
         console.log(currentIndex);
         // console.log(correctAnswer);
 
@@ -356,20 +403,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         showResult(questions.questions.length);
         $resulContainer = document.querySelector(".result-container");
+        
+        countDown(duration);
       });
 
-      autoNextQuestion = setInterval(() => {
-        $submitButton.click();
-      }, 2000);
-
-      const renderQuestions = function (questions, lang, questionsCount) {
-        if (currentIndex < questionsCount) {
+      const renderQuestions = function (questions, lang, questionsNum) {
+        if (currentIndex < questionsNum) {
           console.log(currentIndex);
-          console.log(questionsCount);
+          console.log(questionsNum);
 
           $categoryLang.innerHTML =
             lang.slice(0, 1).toUpperCase() + lang.slice(1);
-          $questionsCountElm.innerHTML = questionsCount;
+          $questionsCountElm.innerHTML = questionsNum;
 
           let $questionsTitle = document.createElement("h3");
           console.log(questions);
@@ -412,6 +457,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         questions.lang,
         questions.questions.length
       );
+
+      clearInterval(autoNextQuestion);
+
       console.log(questions);
 
       $languageSelectContainer.classList.add("fade-out");
